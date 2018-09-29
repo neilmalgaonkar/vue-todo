@@ -7,7 +7,7 @@
                 <input id="toggle-all" class="toggle-all" type="checkbox" @click="markAllComplete">
                 <label for="toggle-all">Mark all as complete</label>
             </div>
-            <List />
+            <router-view />
         </section>
         <Footer />
     </section>
@@ -16,7 +16,6 @@
 <script>
 import Footer from './components/Footer.vue';
 import Header from './components/Header.vue';
-import List from './components/List.vue';
 
 import _ from 'lodash';
 
@@ -30,8 +29,7 @@ export default {
     },
     components: {
         Footer,
-        Header,
-        List
+        Header
     },
     methods: {
         markAllComplete: function () {
