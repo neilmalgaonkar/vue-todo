@@ -1,10 +1,9 @@
 <template>
-    <li v-bind:class="{ completed: item.checked }">
+    <li v-bind:class="isCompeted">
         <div class="view">
-            <input class="toggle" type="checkbox" v-model="item.checked"
-            @change="changeEvent">
+            <input class="toggle" type="checkbox" :value="item.checked" :checked="item.checked" @change="toggleTask">
             <label>{{ item.task }}</label>
-            <button class="destroy" @click="$emit('deleteItem', index)"></button>
+            <button class="destroy" @click="deleteItem"></button>
         </div>
         <input class="edit" value="Create a TodoMVC template">
     </li>
@@ -17,9 +16,19 @@ export default {
         'item',
         'index'
     ],
+    computed: {
+        isCompeted: function () {
+            return {
+                completed: this.item.checked 
+            };
+        }
+    },
     methods: {
-        changeEvent: function ($event) {
-            this.item.checked = $event.target.checked;
+        toggleTask: function ($event) {
+            this.$store.dispatch('toggleTask', this.index);
+        },
+        deleteItem: function ($event) {
+            this.$store.dispatch('deleteTask', this.item);
         }
     }
 }
