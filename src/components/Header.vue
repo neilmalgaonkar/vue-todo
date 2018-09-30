@@ -14,8 +14,11 @@ export default {
     name: 'Header',
     methods: {
         onEnter: function ($event) {
-            const text = $event.target.value;
-            this.$emit('addItem', text);
+            const taskObject = {
+                task: $event.target.value,
+                checked: false
+            };
+            this.$store.dispatch('addTask', taskObject);
             $event.target.value = "";
         }
     }

@@ -1,20 +1,15 @@
 <style lang="scss" src="./scss/todo.scss"></style>
 <template>
     <section class="todoapp">
-        <Header v-on:addItem="addItem" />
+        <Header />
         <section class="main">
             <div>
-                <input id="toggle-all" class="toggle-all" type="checkbox">
+                <input id="toggle-all" class="toggle-all" type="checkbox" @click="markAllComplete">
                 <label for="toggle-all">Mark all as complete</label>
             </div>
-            <List v-bind:items="getItems"
-                v-on:deleteItem="deleteItem"/>
+            <List />
         </section>
-        <Footer 
-            v-bind:currentFilter="currentFilter"
-            v-on:changeFilter="changeFilter"
-            v-on:clearAllTasks="clearAllTasks"
-            v-bind:totalTasks="totalItems"/>
+        <Footer />
     </section>
 </template>
 
@@ -29,9 +24,8 @@ export default {
     name: 'TodoMVC',
     data() {
         return {
-            items: [
-            ],
-            currentFilter: 'all'
+            items: this.$store.state.items,
+            currentFilter: this.$store.state.currentFilter
         };
     },
     components: {
@@ -39,58 +33,9 @@ export default {
         Header,
         List
     },
-    computed: {
-        getItems: function() {
-            if (this.currentFilter == 'all') {
-                return this.items;
-            }
-            const filteredItems = [];
-            _.each(this.items, (item) => {
-                if (this.currentFilter === 'completed' && item.checked) {
-                    filteredItems.push(item);
-                } else if (this.currentFilter === 'active' && !item.checked) {
-                    filteredItems.push(item);
-                }
-            });
-            return filteredItems;
-        },
-        totalItems: function () {
-            if (this.currentFilter == 'all') {
-                return this.items.length;
-            }
-             const filteredItems = [];
-            _.each(this.items, (item) => {
-                if (this.currentFilter === 'completed' && item.checked) {
-                    filteredItems.push(item);
-                } else if (this.currentFilter === 'active' && !item.checked) {
-                    filteredItems.push(item);
-                }
-            });
-            return filteredItems.length;
-        }
-    },
     methods: {
-        addItem: function (taskText) {
-            const taskObject = {
-                task: taskText,
-                checked: false
-            };
-            this.items.push(taskObject);
-        },
-        deleteItem: function (itemIndex) {
-           this.items = [
-                ...this.items.slice(0, itemIndex),
-                ...this.items.slice(itemIndex+1)
-           ];
-        },
-        changeFilter: function (filter) {
-            console.log("Filter is ", filter)
-            this.currentFilter = filter;
-        },
-        clearAllTasks: function () {
-            _.each(this.items, function (item) {
-                item.checked = false;
-            });
+        markAllComplete: function () {
+            this.$store.dispatch('markAllComplete');
         }
     }
 }
