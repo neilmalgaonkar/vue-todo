@@ -5,13 +5,13 @@
         <!-- Remove this if you don't implement routing -->
         <ul class="filters">
             <li>
-                <a v-bind:class="isSelectedFilter('all')" href="#/" @click="changeFilter('all')">All</a>
+                <router-link v-on:click.native="changeFilter('all')" :to="{ path: '/' }" active-class="selected" exact>All</router-link>
             </li>
             <li>
-                <a v-bind:class="isSelectedFilter('active')" href="#/active" @click="changeFilter('active')">Active</a>
+                <router-link v-on:click.native="changeFilter('active')" :to="{ path: '/active' }" active-class="selected" exact>Active</router-link>
             </li>
             <li>
-                <a v-bind:class="isSelectedFilter('completed')" href="#/completed" @click="changeFilter('completed')">Completed</a>
+                <router-link v-on:click.native="changeFilter('completed')" :to="{ path: '/completed' }" active-class="selected" exact>Completed</router-link>
             </li>
         </ul>
         <!-- Hidden if no completed items are left ↓ -->
@@ -36,11 +36,6 @@ export default {
     methods: {
         changeFilter: function (filter) {
             this.$store.dispatch('changeFilter', filter)
-        },
-        isSelectedFilter: function(filter) {
-            return {
-                selected: this.$store.state.currentFilter == filter
-            }
         },
         clearComplete: function () {
             this.$store.dispatch('clearCompleted');
